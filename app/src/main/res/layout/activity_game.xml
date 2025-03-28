@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/wordTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Macska"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/timerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Idő: 10 másodperc"
+        android:textSize="20sp"
+        android:textColor="@android:color/holo_red_dark"
+        android:layout_marginTop="20dp" />
+
+    <Button
+        android:id="@+id/correctButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Helyes!"
+        android:layout_marginTop="20dp" />
+</LinearLayout>
