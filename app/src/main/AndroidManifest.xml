@@ -19,7 +19,7 @@
             android:name=".activity_result"
             android:exported="false" />
         <activity
-            android:name=".activity_game"
+            android:name=".GameActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

@@ -1,0 +1,5 @@
+{
+  "Animals": ["Dog", "Cat", "Elephant"],
+  "Fruits": ["Apple", "Banana", "Cherry"],
+  "Vehicles": ["Car", "Bike", "Airplane"]
+}
