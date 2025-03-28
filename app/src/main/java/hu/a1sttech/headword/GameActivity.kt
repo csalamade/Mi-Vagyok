@@ -1,17 +1,30 @@
 package hu.a1sttech.headword
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.content.pm.ActivityInfo
+import android.graphics.Color
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.CountDownTimer
+import android.os.Handler
+import android.os.Looper
+import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 
-class GameActivity : AppCompatActivity() {
+class GameActivity : AppCompatActivity(), SensorEventListener {
+
+    // Szenzorok kezeléséhez
+    private lateinit var sensorManager: SensorManager
+    private var accelerometer: Sensor? = null
 
     //visszaszámláló változói
 
@@ -22,6 +35,11 @@ class GameActivity : AppCompatActivity() {
     //json ból olvasás változói
     private lateinit var words: List<String>  // A szavak listája
     private var currentWordIndex = 0  // Melyik szónál járunk
+
+    // UI elemek
+    private lateinit var wordTextView: TextView
+    private lateinit var timerTextView: TextView
+    private lateinit var nextButton: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,25 +59,82 @@ class GameActivity : AppCompatActivity() {
         // Képernyő ébren tartása játék közben
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
+        // Senzor inicializálása
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+
+        ///UI elemek inicializálása
+        wordTextView = findViewById(R.id.wordTextView)
+        nextButton = findViewById(R.id.nextButton)
+        timerTextView = findViewById(R.id.timerTextView)
+
         startCountDown()
 
         val category = intent.getStringExtra("category")  // Kategória neve
         val wordCategories = parseJson(this)  // JSON beolvasása
         words = wordCategories[category] ?: listOf("Nincs szó elérhető")  // Kategória szavai
 
-        val wordTextView: TextView = findViewById(R.id.wordTextView)
-        val nextButton: Button = findViewById(R.id.nextButton)
+
 
         // Az első szó megjelenítése
         wordTextView.text = words[currentWordIndex]
 
         // "Következő" gomb eseménykezelője
         nextButton.setOnClickListener {
-            currentWordIndex = (currentWordIndex + 1) % words.size  // Körforgás
-            wordTextView.text = words[currentWordIndex]
-            restartTimer()
+            skipWord()
+
         }
 
+    }
+    override fun onResume() {
+        super.onResume()
+        accelerometer?.also { acc ->
+            sensorManager.registerListener(this, acc, SensorManager.SENSOR_DELAY_NORMAL)
+
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sensorManager.unregisterListener(this)
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
+            val zValue = event.values[2]  // A telefon dőlése az Z tengely mentén
+
+            if (zValue > 9) {
+                acceptWord()  // Ha előre billentjük, elfogadjuk a szót
+            } else if (zValue < -9) {
+                skipWord()  // Ha hátrafelé billentjük, kihagyjuk a szót
+            }
+        }
+    }
+
+    override fun onAccuracyChanged(p0: Sensor?, accuracy: Int) {
+        // Nem kell semmit csinálni, de kell az implementáció!
+    }
+
+
+    private fun showWord() {
+        restartTimer()
+        if (currentWordIndex < words.size) {
+            wordTextView.text = words[currentWordIndex]
+        } else {
+            wordTextView.text = "Vége a játéknak!"
+        }
+    }
+
+    private fun acceptWord() {
+        currentWordIndex++
+        changeBackgroundColor(Color.GREEN)
+        showWord()
+    }
+
+    private fun skipWord() {
+        currentWordIndex++
+        changeBackgroundColor(Color.RED)
+        showWord()
     }
 
     private fun startCountDown() {
@@ -67,7 +142,7 @@ class GameActivity : AppCompatActivity() {
             override fun onTick(millisUntilFinished: Long) {
                 // Minden másodpercben frissíti a felületet
                 val secondsRemaining = millisUntilFinished / 1000
-                findViewById<TextView>(R.id.timerTextView).text =
+                timerTextView.text =
                     "Hátralévő idő: $secondsRemaining másodperc"
             }
 
@@ -91,5 +166,17 @@ class GameActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         countDownTimer?.cancel()
+    }
+
+    private fun changeBackgroundColor(color: Int) {
+        val rootView = findViewById<View>(android.R.id.content)
+        val originalColor = rootView.background // Eredeti szín mentése
+
+        rootView.setBackgroundColor(color) // Háttér szín beállítása
+
+        // 500ms múlva visszaállítjuk az eredeti színt
+        Handler(Looper.getMainLooper()).postDelayed({
+            rootView.background = originalColor
+        }, 500)
     }
 }
