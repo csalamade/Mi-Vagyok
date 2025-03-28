@@ -36,6 +36,10 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var words: List<String>  // A szavak listája
     private var currentWordIndex = 0  // Melyik szónál járunk
 
+    // Billenés változói
+    private var isTiltDetectionEnabled = true  // Érzékelés engedélyezve
+    private val tiltCooldownMillis = 1500L  // Várakozási idő billenések között milliszekundumban
+
     // UI elemek
     private lateinit var wordTextView: TextView
     private lateinit var timerTextView: TextView
@@ -68,14 +72,14 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         nextButton = findViewById(R.id.nextButton)
         timerTextView = findViewById(R.id.timerTextView)
 
-        startCountDown()
+
 
         val category = intent.getStringExtra("category")  // Kategória neve
         val wordCategories = parseJson(this)  // JSON beolvasása
         words = wordCategories[category] ?: listOf("Nincs szó elérhető")  // Kategória szavai
 
 
-
+        startCountDown()
         // Az első szó megjelenítése
         wordTextView.text = words[currentWordIndex]
 
@@ -100,13 +104,16 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
-        if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
-            val zValue = event.values[2]  // A telefon dőlése az Z tengely mentén
+        if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER && isTiltDetectionEnabled) {
+            val y = event.values[1]
 
-            if (zValue > 9) {
-                acceptWord()  // Ha előre billentjük, elfogadjuk a szót
-            } else if (zValue < -9) {
-                skipWord()  // Ha hátrafelé billentjük, kihagyjuk a szót
+
+            if (y > 9) {  // Felfelé billentés küszöbértéke
+                acceptWord()
+            }
+            // Jobbra billenés (x negatív)
+            else if (y < -9) {  // Lefelé billentés küszöbértéke
+                skipWord()
             }
         }
     }
@@ -115,14 +122,28 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         // Nem kell semmit csinálni, de kell az implementáció!
     }
 
+    private fun enableTiltDetection() {
+        isTiltDetectionEnabled = true
+    }
+
+    private fun disableTiltDetection() {
+        isTiltDetectionEnabled = false
+    }
+
 
     private fun showWord() {
+        disableTiltDetection()
         restartTimer()
         if (currentWordIndex < words.size) {
             wordTextView.text = words[currentWordIndex]
         } else {
             wordTextView.text = "Vége a játéknak!"
         }
+
+        // Újra engedélyezzük a billenés érzékelést egy kis késleltetés után
+        Handler(Looper.getMainLooper()).postDelayed({
+            enableTiltDetection()
+        }, tiltCooldownMillis)
     }
 
     private fun acceptWord() {
@@ -135,6 +156,8 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         currentWordIndex++
         changeBackgroundColor(Color.RED)
         showWord()
+
+
     }
 
     private fun startCountDown() {
