@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:padding="20dp">
+    android:padding="16dp"
+    android:gravity="center">
 
     <TextView
-        android:id="@+id/scoreTextView"
+        android:id="@+id/resultTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pontszám: 0"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        android:textSize="40sp"
+        android:text="Eredmények"
+        android:gravity="center"
+        android:layout_marginBottom="40dp" />
 
     <Button
         android:id="@+id/restartButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Újrakezdés"
-        android:layout_marginTop="20dp" />
+        android:text="Új játék indítása"
+        android:textSize="30sp"
+        android:layout_marginBottom="40dp" />
 </LinearLayout>

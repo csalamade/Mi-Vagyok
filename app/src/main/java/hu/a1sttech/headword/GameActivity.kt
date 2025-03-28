@@ -1,6 +1,7 @@
 package hu.a1sttech.headword
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -49,6 +50,9 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var timerTextView: TextView
     private lateinit var nextButton: Button
 
+    private var correctWordCount = 0 // Eltalált szavak száma
+    private var skippedWordCount = 0 // Kihagyott szavak száma
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +74,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
-        ///UI elemek inicializálása
+        //UI elemek inicializálása
         wordTextView = findViewById(R.id.wordTextView)
         nextButton = findViewById(R.id.nextButton)
         timerTextView = findViewById(R.id.timerTextView)
@@ -173,6 +177,15 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         Toast.makeText(this, "Játék elindult!", Toast.LENGTH_SHORT).show()
     }
 
+    private fun endGame() {
+        // Játék vége - eredmények átadása a ResultActivity-nek
+        val intent = Intent(this, ResultActivity::class.java)
+        intent.putExtra("correctWords", correctWordCount) // Eltalált szavak száma
+        intent.putExtra("skippedWords", skippedWordCount) // Kihagyott szavak száma
+        startActivity(intent)
+        finish() // Bezárjuk a GameActivity-t
+    }
+
 
     private fun showWord() {
         disableTiltDetection()
@@ -181,6 +194,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
             wordTextView.text = words[currentWordIndex]
         } else {
             wordTextView.text = "Vége a játéknak!"
+            endGame()
         }
 
         // Újra engedélyezzük a billenés érzékelést egy kis késleltetés után
@@ -192,11 +206,13 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     private fun acceptWord() {
         currentWordIndex++
         changeBackgroundColor(Color.GREEN)
+        correctWordCount++
         showWord()
     }
 
     private fun skipWord() {
         currentWordIndex++
+        skippedWordCount++
         changeBackgroundColor(Color.RED)
         showWord()
 
