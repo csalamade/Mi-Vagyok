@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Macska"
-        android:textSize="40sp"
+        android:textSize="60sp"
         android:textStyle="bold" />
 
     <TextView
@@ -20,14 +20,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Idő: 10 másodperc"
-        android:textSize="20sp"
+        android:textSize="40sp"
         android:textColor="@android:color/holo_red_dark"
         android:layout_marginTop="20dp" />
 
     <Button
-        android:id="@+id/correctButton"
+        android:id="@+id/nextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Helyes!"
-        android:layout_marginTop="20dp" />
+        android:text="Következő"
+        android:textSize="30sp"
+        android:layout_marginTop="10dp" />
 </LinearLayout>

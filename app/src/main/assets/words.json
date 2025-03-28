@@ -1,5 +1,8 @@
 {
-  "Animals": ["Dog", "Cat", "Elephant"],
-  "Fruits": ["Apple", "Banana", "Cherry"],
-  "Vehicles": ["Car", "Bike", "Airplane"]
+  "Állatok": ["Kutya", "Macska", "Elefánt", "Oroszlán", "Zsiráf", "Pingvin"],
+  "Gyümölcsök": ["Alma", "Banán", "Cseresznye", "Málna", "Szőlő", "Narancs"],
+  "Járművek": ["Autó", "Kerékpár", "Repülőgép", "Vonat", "Hajó", "Helikopter"],
+  "Ételek": ["Pizza", "Sushi", "Hamburger", "Gulyásleves", "Palacsinta", "Tészta"],
+  "Foglalkozások": ["Orvos", "Tanár", "Mérnök", "Szakács", "Pilóta", "Rendőr"],
+  "Országok": ["Magyarország", "Franciaország", "Japán", "Ausztrália", "Brazília", "Kanada"]
 }
