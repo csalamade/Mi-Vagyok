@@ -19,6 +19,8 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import kotlin.math.abs
 
 class GameActivity : AppCompatActivity(), SensorEventListener {
 
@@ -39,6 +41,8 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     // Billenés változói
     private var isTiltDetectionEnabled = true  // Érzékelés engedélyezve
     private val tiltCooldownMillis = 1500L  // Várakozási idő billenések között milliszekundumban
+    private var isGameActive = false  // Kezdetben a játék inaktív
+    private var isPhoneFacingAway = false  // Telefon kijelzője a másik játékos felé néz-e
 
     // UI elemek
     private lateinit var wordTextView: TextView
@@ -49,12 +53,11 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_game)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+//            insets
+//        }
         // A kijelzőt fektetett módba állítjuk
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
@@ -78,10 +81,14 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         val wordCategories = parseJson(this)  // JSON beolvasása
         words = wordCategories[category] ?: listOf("Nincs szó elérhető")  // Kategória szavai
 
-
+        // Kezdeti szöveg beállítása - instrukció a játékosnak
+        wordTextView.text = "Fordítsd a kijelzőt a másik játékos felé!"
+        timerTextView.text = ""
         startCountDown()
         // Az első szó megjelenítése
-        wordTextView.text = words[currentWordIndex]
+        //wordTextView.text = words[currentWordIndex]
+
+
 
         // "Következő" gomb eseménykezelője
         nextButton.setOnClickListener {
@@ -104,19 +111,39 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
-        if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER && isTiltDetectionEnabled) {
-            val y = event.values[1]
+        when (event?.sensor?.type) {
+            Sensor.TYPE_ACCELEROMETER -> {
+                val x = event.values[0]
+                val y = event.values[1]
+                val z = event.values[2]
 
-
-            if (y > 9) {  // Felfelé billentés küszöbértéke
-                acceptWord()
-            }
-            // Jobbra billenés (x negatív)
-            else if (y < -9) {  // Lefelé billentés küszöbértéke
-                skipWord()
+                // Ha nem aktív a játék, ellenőrizzük a telefon orientációját
+                if (!isGameActive) {
+                    // Fekvő módban vagyunk (requestedOrientation miatt)
+                    // Ha z értéke pozitív és jelentős, akkor a kijelző felfelé néz
+                    // Ez a helyzet, amikor a telefon a játékos homlokán van kijelzővel kifelé
+                    if (z > 7) {
+                        isPhoneFacingAway = true
+                        // Ha a telefon megfelelő helyzetben van, indítjuk a játékot
+                        startGame()
+                    }
+                }
+                // Ha aktív a játék és engedélyezve van a billenés érzékelése
+                else if (isTiltDetectionEnabled) {
+                    // Felfelé billenés (y pozitív)
+                    if (y > 7) { // Felfelé billentés küszöbértéke
+                        acceptWord()
+                    }
+                    // Lefelé billenés (y negatív)
+                    else if (y < -7) { // Lefelé billentés küszöbértéke
+                        skipWord()
+                    }
+                }
             }
         }
     }
+
+
 
     override fun onAccuracyChanged(p0: Sensor?, accuracy: Int) {
         // Nem kell semmit csinálni, de kell az implementáció!
@@ -128,6 +155,22 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
     private fun disableTiltDetection() {
         isTiltDetectionEnabled = false
+    }
+
+    private fun startGame() {
+        // Játék indítása csak egyszer
+        if (isGameActive) return
+
+        isGameActive = true
+        isTiltDetectionEnabled = true
+
+        showWord()
+
+        // Időzítő indítása
+        startCountDown()
+
+        // Játék indításának jelzése
+        Toast.makeText(this, "Játék elindult!", Toast.LENGTH_SHORT).show()
     }
 
 
