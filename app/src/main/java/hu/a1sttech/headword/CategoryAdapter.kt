@@ -7,27 +7,29 @@ import androidx.recyclerview.widget.RecyclerView
 
 class CategoryAdapter(
     private val categories: List<String>,
-    private val onClick: (String) -> Unit
-) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
+    private val onItemClick: (String) -> Unit
+) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
-    // ViewHolder osztály - itt kapcsoljuk össze az item_category.xml elemeivel
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val categoryTextView: TextView = view.findViewById(R.id.categoryTextView)
+    class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val categoryName: TextView = itemView.findViewById(R.id.categoryNameTextView)
     }
 
-    // Itt hozzuk létre az egyes elemek nézetét
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_category, parent, false)
-        return ViewHolder(view)
+        return CategoryViewHolder(view)
     }
 
-    // Itt határozzuk meg, hogy mi történik egy adott elem megjelenítésekor
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         val category = categories[position]
-        holder.categoryTextView.text = category
-        holder.itemView.setOnClickListener { onClick(category) }
+        holder.categoryName.text = category
+
+        // Kattintás esemény beállítása az egész listaelementre
+        holder.itemView.setOnClickListener {
+            onItemClick(category)  // Meghívja a MainActivity által küldött kattintási függvényt
+        }
     }
 
-    override fun getItemCount() = categories.size
+    override fun getItemCount(): Int = categories.size
 }
+
