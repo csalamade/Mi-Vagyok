@@ -16,6 +16,7 @@ import android.hardware.SensorManager
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
@@ -31,7 +32,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
     //visszaszámláló változói
 
-    private lateinit var countDownTimer: CountDownTimer
+    private var countDownTimer: CountDownTimer? = null
     private val totalTimeInMillis = 30000L // 30 másodperc
     private val countDownInterval = 1000L // 1 másodpercenként frissít
 
@@ -88,7 +89,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         // Kezdeti szöveg beállítása - instrukció a játékosnak
         wordTextView.text = "Fordítsd a kijelzőt a másik játékos felé!"
         timerTextView.text = ""
-        startCountDown()
+        //startCountDown()
         // Az első szó megjelenítése
         //wordTextView.text = words[currentWordIndex]
 
@@ -107,10 +108,17 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
             sensorManager.registerListener(this, acc, SensorManager.SENSOR_DELAY_NORMAL)
 
         }
+        if(isGameActive)
+        {
+            restartTimer()
+        }
+
     }
 
     override fun onPause() {
         super.onPause()
+        countDownTimer?.cancel()
+       // Log.d("ActivityLifecycle", "onPause meghívva")
         sensorManager.unregisterListener(this)
     }
 
@@ -170,8 +178,6 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
         showWord()
 
-        // Időzítő indítása
-        startCountDown()
 
         // Játék indításának jelzése
         Toast.makeText(this, "Játék elindult!", Toast.LENGTH_SHORT).show()
