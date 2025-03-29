@@ -230,7 +230,8 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
             override fun onFinish() {
                 // Amikor lejár az idő
-                findViewById<TextView>(R.id.timerTextView).text = "Lejárt az idő!"
+                skipWord()
+                Toast.makeText(this@GameActivity, "Lejárt az idő!", Toast.LENGTH_SHORT).show()
             }
         }.start()
     }
