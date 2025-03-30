@@ -102,6 +102,8 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         val category = intent.getStringExtra("category")  // Kategória neve
         val wordCategories = parseJson(this)  // JSON beolvasása
         words = wordCategories[category] ?: listOf("Nincs szó elérhető")  // Kategória szavai
+        words=words.shuffled()
+
 
         // Kezdeti szöveg beállítása - instrukció a játékosnak
         wordTextView.text = "Fordítsd a kijelzőt a másik játékos felé!"
