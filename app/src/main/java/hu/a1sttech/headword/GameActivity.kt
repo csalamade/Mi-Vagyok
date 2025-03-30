@@ -13,9 +13,13 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.os.Build
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
@@ -29,6 +33,11 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     // Szenzorok kezeléséhez
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
+
+    //rezgés
+    // Osztályszintű változóban tároljuk a vibrator példányt
+    private lateinit var vibrator: Vibrator
+
 
     //visszaszámláló változói
 
@@ -74,6 +83,14 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         // Senzor inicializálása
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+
+        // rezgés inicializálása
+        vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val vibratorManager = getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+            vibratorManager.defaultVibrator
+        } else {
+            getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        }
 
         //UI elemek inicializálása
         wordTextView = findViewById(R.id.wordTextView)
@@ -213,6 +230,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         currentWordIndex++
         changeBackgroundColor(Color.GREEN)
         correctWordCount++
+        vibrateFeedback(true)
         showWord()
     }
 
@@ -220,6 +238,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         currentWordIndex++
         skippedWordCount++
         changeBackgroundColor(Color.RED)
+        vibrateFeedback(false)
         showWord()
 
 
@@ -267,5 +286,21 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         Handler(Looper.getMainLooper()).postDelayed({
             rootView.background = originalColor
         }, 500)
+    }
+    private fun vibrateFeedback(correct: Boolean) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val effect: VibrationEffect = if (correct) {
+                VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE)
+            } else {
+                VibrationEffect.createWaveform(longArrayOf(0, 200, 100, 200), -1)
+            }
+            vibrator.vibrate(effect)
+        } else {
+            if (correct) {
+                vibrator.vibrate(100)
+            } else {
+                vibrator.vibrate(500)
+            }
+        }
     }
 }
