@@ -1,8 +1,76 @@
 {
-  "Állatok": ["Kutya", "Macska", "Elefánt", "Oroszlán", "Zsiráf", "Pingvin"],
-  "Gyümölcsök": ["Alma", "Banán", "Cseresznye", "Málna", "Szőlő", "Narancs"],
-  "Járművek": ["Autó", "Kerékpár", "Repülőgép", "Vonat", "Hajó", "Helikopter"],
-  "Ételek": ["Pizza", "Sushi", "Hamburger", "Gulyásleves", "Palacsinta", "Tészta"],
-  "Foglalkozások": ["Orvos", "Tanár", "Mérnök", "Szakács", "Pilóta", "Rendőr"],
-  "Országok": ["Magyarország", "Franciaország", "Japán", "Ausztrália", "Brazília", "Kanada"]
+  "Állatok": [
+    "Kutya", "Macska", "Elefánt", "Oroszlán", "Zsiráf", "Pingvin",
+    "Vidra", "Zebra", "Láma", "Delfin", "Szurikáta", "Koala", "Farkas", "Hód", "Kaméleon",
+    "Aranysakál", "Hiúz", "Pézsmapocok", "Tukán", "Hangyász",
+    "Tyúk", "Ló", "Malac", "Medve", "Róka", "Szarvas", "Tigris", "Kígyó", "Pillangó", "Cápa",
+    "Bálna", "Polip", "Bagoly", "Sas", "Teknős", "Béka", "Hörcsög", "Mókus", "Tehén", "Birka",
+    "Mosómedve", "Maki", "Panda", "Kenguru", "Tapír", "Vombat", "Tatu"
+  ],
+  "Gyümölcsök": [
+    "Alma", "Banán", "Cseresznye", "Málna", "Szőlő", "Narancs","Barack","Szilva",
+    "Datolya", "Gránátalma", "Kivi", "Mangó", "Maracuja", "Licsi", "Csillaggyümölcs (Karambola)", "Kumkvat",
+    "Füge", "Papaja", "Pomelo",
+    "Körte", "Eper", "Meggy", "Görögdinnye", "Sárgadinnye", "Ribizli", "Áfonya", "Szeder",
+    "Ananász", "Citrom", "Lime", "Avokádó", "Grapefruit",
+    "Birsalma", "Bergamott", "Guava", "Passiógyümölcs", "Jujuba"
+  ],
+  "Járművek": [
+    "Autó", "Kerékpár", "Repülőgép", "Vonat", "Hajó", "Helikopter",
+    "Motorbicikli", "Robogó", "Roller", "Gördeszka", "Busz", "Villamos", "Metró", "Trolibusz",
+    "Teherautó", "Traktor", "Mentőautó", "Tűzoltóautó", "Vitorlás", "Csónak", "Tengeralattjáró",
+    "Hőlégballon", "Rakéta", "Komp", "Quad",
+    "Motor", "Tanker", "Ballon", "Síkrepülő"
+  ],
+  "Ételek": [
+    "Pizza", "Sushi", "Hamburger", "Gulyásleves", "Palacsinta", "Tészta",
+    "Lángos", "Kürtőskalács", "Rántott hús", "Töltött káposzta", "Halászlé", "Lecsó",
+    "Húsleves", "Babfőzelék", "Kenyér", "Sajt", "Tojás", "Fagylalt", "Csokoládé",
+    "Sült krumpli", "Bejgli", "Dobostorta", "Saláta", "Joghurt", "Virsli",
+    "Lasagne", "Tiramisu", "Ratatouille", "Paella", "Pho leves", "Kebab", "Hummus", "Taco", "Baklava", "Rakott krumpli"
+  ],
+  "Foglalkozások": [
+    "Orvos", "Tanár", "Mérnök", "Szakács", "Pilóta", "Rendőr",
+    "Ügyvéd", "Pincér", "Fodrász", "Eladó", "Pék", "Postás", "Tűzoltó", "Újságíró",
+    "Színész", "Énekes", "Zenész", "Festő", "Sportoló", "Villamosvezető", "Ápoló", "Fogorvos",
+    "Kéményseprő", "Bíró", "Tudós", "Kertész", "Buszsofőr",
+    "Bűvész", "Pszichológus", "Őrmester", "Videótervező", "Youtuber", "Biológus"
+  ],
+  "Országok": [
+    "Magyarország", "Franciaország", "Japán", "Ausztrália", "Brazília", "Kanada",
+    "Németország", "Olaszország", "Spanyolország", "Egyesült Királyság", "Oroszország", "Kína",
+    "India", "Egyesült Államok", "Mexikó", "Egyiptom", "Görögország", "Ausztria", "Svájc",
+    "Románia", "Lengyelország", "Svédország", "Norvégia", "Argentína",
+    "Dél-Korea", "Izland", "Thaiföld"
+  ],
+  "Tárgyak": [
+    "Asztal", "Szék", "Ágy", "Szekrény", "Lámpa", "Tévé", "Telefon", "Számítógép",
+    "Könyv", "Toll", "Ceruza", "Olló", "Tányér", "Pohár", "Villa", "Kanál", "Kés",
+    "Kulcs", "Pénztárca", "Táska", "Cipő", "Kalapács", "Csavarhúzó", "Seprű", "Óra",
+    "Szemüveg", "Fésű", "Tükör", "Labda", "Esernyő"
+  ],
+  "Sportok": [
+    "Foci (Labdarúgás)", "Kosárlabda", "Kézilabda", "Röplabda", "Tenisz", "Úszás", "Atlétika",
+    "Vívás", "Ökölvívás", "Birkózás", "Kerékpározás", "Síelés", "Korcsolyázás", "Jégkorong",
+    "Vízilabda", "Evezés", "Torna", "Golf", "Asztalitenisz", "Lovaglás",
+    "Futball", "Krikett", "Tollaslabda", "Kajak", "Sakk", "Túra", "Parkour", "Szörf"
+  ],
+  "Természeti Jelenségek": [
+    "Eső", "Hó", "Napsütés", "Szél", "Vihar", "Villámlás", "Mennydörgés", "Szivárvány",
+    "Földrengés", "Vulkánkitörés", "Árvíz", "Napfogyatkozás", "Holdfogyatkozás", "Köd",
+    "Jégeső", "Hőség", "Fagy", "Dagály", "Apály", "Forgószél"
+  ],
+  "Épületek / Helyek": [
+    "Ház", "Iskola", "Kórház", "Bolt", "Templom", "Vár", "Kastély", "Múzeum", "Színház",
+    "Mozi", "Étterem", "Park", "Játszótér", "Híd", "Torony", "Repülőtér", "Pályaudvar",
+    "Piac", "Könyvtár", "Uszoda", "Állatkert", "Bank", "Rendőrség"
+  ],
+  "Hangszerek": [
+     "Zongora", "Hegedű", "Gitár", "Dob", "Fuvola", "Trombita", "Szaxofon", "Hárfa",
+     "Cselló", "Klarinét", "Furulya", "Cimbalom", "Harmonika", "Xilofon", "Nagybőgő", "Harsona"
+  ],
+  "Hírességek": [
+    "Albert Einstein", "Leonardo da Vinci", "Marie Curie", "Steve Jobs", "Beyoncé",
+    "Cristiano Ronaldo", "Emma Watson", "Elon Musk", "Greta Thunberg", "Dwayne Johnson", "Taylor Swift", "Usain Bolt"
+  ]
 }
