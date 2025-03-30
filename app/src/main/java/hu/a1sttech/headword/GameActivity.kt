@@ -5,8 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.hardware.Sensor
@@ -20,13 +18,11 @@ import android.os.Looper
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import kotlin.math.abs
 
 class GameActivity : AppCompatActivity(), SensorEventListener {
 
@@ -58,7 +54,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     // UI elemek
     private lateinit var wordTextView: TextView
     private lateinit var timerTextView: TextView
-    private lateinit var nextButton: Button
+    private lateinit var endGameButton: Button
 
     private var correctWordCount = 0 // Eltalált szavak száma
     private var skippedWordCount = 0 // Kihagyott szavak száma
@@ -94,7 +90,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
         //UI elemek inicializálása
         wordTextView = findViewById(R.id.wordTextView)
-        nextButton = findViewById(R.id.nextButton)
+        endGameButton = findViewById(R.id.endGameButton)
         timerTextView = findViewById(R.id.timerTextView)
 
 
@@ -114,9 +110,9 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
 
 
-        // "Következő" gomb eseménykezelője
-        nextButton.setOnClickListener {
-            skipWord()
+
+        endGameButton.setOnClickListener {
+           endGame()
 
         }
 
