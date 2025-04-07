@@ -19,6 +19,12 @@ class OnboardingActivity : AppCompatActivity() {
         // Képek hozzáadása (adja hozzá ezeket a képeket a drawable mappába)
         val onboardingItems = listOf(
             OnboardingItem(
+                "Üdv a Mi Vagyok? játékban!",
+                "Készülj fel egy vidám, pörgős partijátékra, ahol a nevetés garantált!\n" +
+                        "Ismerd meg pár lépésben, hogyan működik a játék – csak lapozz tovább!",
+                R.drawable.app_icon
+            ),
+            OnboardingItem(
                 "Többféle témakör, egy csomó nevetés!",
                 "Mielőtt játszani kezdenél, válassz egy kategóriát!",
                 R.drawable.kategoriak
@@ -33,7 +39,7 @@ class OnboardingActivity : AppCompatActivity() {
             OnboardingItem(
                 "Nézd meg az eredményt!",
                 "A kör végén megtudhatod, hány szót találtál el",
-                R.drawable.kupa // Cseréld le a saját képed nevére
+                R.drawable.kupa
             )
         )
 
