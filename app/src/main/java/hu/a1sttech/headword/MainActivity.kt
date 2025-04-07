@@ -48,6 +48,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Ellenőrizi, látta-e már a felhasználó a súgót
+        val sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val onboardingCompleted = sharedPreferences.getBoolean("onboarding_completed", false)
+
+        // Ha még nem látta, irányítódik a súgó képernyőre
+        if (!onboardingCompleted) {
+            startActivity(Intent(this, OnboardingActivity::class.java))
+            finish()
+        }
+
+
+
+
+
         val wordCategories = parseJson(this)  // JSON feldolgozása
         val categories = wordCategories.keys.toList()  // Csak a kategóriák listája
 
